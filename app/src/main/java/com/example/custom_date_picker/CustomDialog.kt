@@ -1,5 +1,6 @@
 package com.example.custom_date_picker
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
@@ -18,6 +19,11 @@ class CustomDialog(
     private var _binding: DialogDatePickerBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL,R.style.FullWidthDialog)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,6 +32,11 @@ class CustomDialog(
         _binding = DialogDatePickerBinding.inflate(inflater, container, false)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
         return binding.root
     }
@@ -43,40 +54,49 @@ class CustomDialog(
         Log.e("TAG", "initDatePicker: $currentYear $currentMonth", )
 
         with(binding){
-            npYear.minValue = currentYear - 1
-            npYear.maxValue = currentYear + 1
+            pricePicker.minValue = 0
+            pricePicker.maxValue = PriceType.toList().size-1
 
-            npMonth.minValue = 1
-            npMonth.maxValue = 12
+//            npMonth.minValue = 1
+//            npMonth.maxValue = 12
+//
+//            npDay.minValue = 1
+//            npDay.maxValue = 31
+//            npDay.maxValue = getDaysInMonth(currentYear, currentMonth)
 
-            npDay.minValue = 1
-            npDay.maxValue = getDaysInMonth(currentYear, currentMonth)
+            pricePicker.displayedValues = PriceType.toList().toTypedArray()
+//            npMonth.displayedValues = getDisplayValues(1, 12, "월")
+//            npDay.displayedValues = getDisplayValues(1, 31, "일")
 
-            npYear.displayedValues = getDisplayValues(currentYear-1, currentYear+1, "년")
-            npMonth.displayedValues = getDisplayValues(1, 12, "월")
-            npDay.displayedValues = getDisplayValues(1, 31, "일")
-
-            npYear.value = currentYear
-            npMonth.value = currentMonth
-            npDay.value = currentDate.get(Calendar.DAY_OF_MONTH)
+            pricePicker.value = 0
+//            npMonth.value = currentMonth
+//            npDay.value = currentDate.get(Calendar.DAY_OF_MONTH)
 
             // 수정 막기
-            npYear.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            npMonth.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            npDay.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            pricePicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+//            npMonth.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+//            npDay.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
-            npYear.setOnValueChangedListener { picker, oldVal, newVal ->
-                val maxDayValue = getDaysInMonth(newVal, npMonth.value)
-                npDay.maxValue = maxDayValue
+//            npYear.setOnValueChangedListener { picker, oldVal, newVal ->
+//                val maxDayValue = getDaysInMonth(newVal, npMonth.value)
+//                npDay.maxValue = maxDayValue
+//            }
+
+//            npMonth.setOnValueChangedListener { picker, oldVal, newVal ->
+//                val maxDayValue = getDaysInMonth(npYear.value, newVal)
+//                npDay.maxValue = maxDayValue
+//            }
+
+            binding.confirmBtn.setOnClickListener {
+                dismiss()
             }
 
-            npMonth.setOnValueChangedListener { picker, oldVal, newVal ->
-                val maxDayValue = getDaysInMonth(npYear.value, newVal)
-                npDay.maxValue = maxDayValue
+            binding.negativeBtn.setOnClickListener {
+                dismiss()
             }
 
-            confirmButton.setOnClickListener {
-                val data = "${npYear.value}. ${npMonth.value}. ${npDay.value}"
+            confirmBtn.setOnClickListener {
+                val data = "${PriceType.toType(pricePicker.value).price}"
                 Log.e("TAG", "initDatePicker: $data", )
                 onConfirm(data)
                 dismiss()
