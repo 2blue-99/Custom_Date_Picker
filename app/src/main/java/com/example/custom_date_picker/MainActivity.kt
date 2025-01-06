@@ -29,7 +29,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDialog(){
-        val dialog = CustomDialog()
+        val dialog = CustomDialog(
+            onConfirm = {onConfirm(it)}
+        )
         dialog.show(this.supportFragmentManager, "custom")
+    }
+
+    private fun onConfirm(date: String){
+        binding.testBtn.text = date
     }
 }

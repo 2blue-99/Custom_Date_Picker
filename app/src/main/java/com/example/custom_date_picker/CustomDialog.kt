@@ -12,7 +12,9 @@ import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import com.example.custom_date_picker.databinding.DialogDatePickerBinding
 
-class CustomDialog(): DialogFragment() {
+class CustomDialog(
+    private val onConfirm:(String) -> Unit
+): DialogFragment() {
     private var _binding: DialogDatePickerBinding? = null
     private val binding get() = _binding!!
 
@@ -37,8 +39,8 @@ class CustomDialog(): DialogFragment() {
         val currentDate = Calendar.getInstance()
 
         val currentYear = currentDate.get(Calendar.YEAR)
-        val currentMonth = currentDate.get(Calendar.MONTH)
-        val currentDayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
+        val currentMonth = currentDate.get(Calendar.MONTH)+1
+        Log.e("TAG", "initDatePicker: $currentYear $currentMonth", )
 
         with(binding){
             npYear.minValue = currentYear - 1
@@ -74,7 +76,10 @@ class CustomDialog(): DialogFragment() {
             }
 
             confirmButton.setOnClickListener {
-                Log.e("TAG", "initDatePicker: ${npYear.value}. ${npMonth.value}. ${npDay.value}", )
+                val data = "${npYear.value}. ${npMonth.value}. ${npDay.value}"
+                Log.e("TAG", "initDatePicker: $data", )
+                onConfirm(data)
+                dismiss()
             }
         }
     }
