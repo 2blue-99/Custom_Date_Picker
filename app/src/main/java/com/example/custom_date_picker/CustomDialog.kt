@@ -9,7 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.NumberPicker
+import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 import com.example.custom_date_picker.databinding.DialogDatePickerBinding
 
@@ -19,9 +21,25 @@ class CustomDialog(
     private var _binding: DialogDatePickerBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL,R.style.FullWidthDialog)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val root = RelativeLayout(requireContext())
+        root.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(root)
+        if (dialog.window != null) {
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        return dialog
     }
 
     override fun onCreateView(
@@ -31,12 +49,6 @@ class CustomDialog(
     ): View? {
         _binding = DialogDatePickerBinding.inflate(inflater, container, false)
 
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
 
         return binding.root
     }
@@ -56,6 +68,8 @@ class CustomDialog(
         with(binding){
             pricePicker.minValue = 0
             pricePicker.maxValue = PriceType.toList().size-1
+
+            pricePicker.wrapSelectorWheel = false
 
 //            npMonth.minValue = 1
 //            npMonth.maxValue = 12
