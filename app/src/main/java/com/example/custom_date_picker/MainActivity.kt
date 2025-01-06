@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.testBtn.setOnClickListener {
-            showDialog()
+            showListDialog()
         }
     }
 
@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         val dialog = CustomDialog(
             onConfirm = {onConfirm(it)}
         )
+        dialog.show(this.supportFragmentManager, "custom")
+    }
+
+    private fun showListDialog(){
+        val dialog = CustomListPickerDialog()
         dialog.show(this.supportFragmentManager, "custom")
     }
 
