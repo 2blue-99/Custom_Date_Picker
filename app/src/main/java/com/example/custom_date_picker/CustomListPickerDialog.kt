@@ -65,7 +65,7 @@ class CustomListPickerDialog: DialogFragment() {
             val items = PriceType.toList().toTypedArray()
             adapter = MyAdapter(items, requireContext())
             layoutManager = LinearLayoutManager(requireContext())
-            val recyclerViewHeightInPx = dpToPx(40 * 5 + 20)
+            val recyclerViewHeightInPx = dpToPx(AppSize.ITEM_LIST_HEIGHT * 5 + AppSize.ITEM_LIST_HEIGHT/2)
             val layoutParams = layoutParams
             layoutParams.height = recyclerViewHeightInPx
             this.layoutParams = layoutParams
@@ -107,8 +107,8 @@ class CustomDividerItemDecoration(
                 val child = parent.getChildAt(i)
                 val params = child.layoutParams as RecyclerView.LayoutParams
 
-                val left = child.left - params.leftMargin
-                val right = child.right + params.rightMargin
+                val left = child.left - params.leftMargin + 60
+                val right = child.right + params.rightMargin - 60
                 val top = child.bottom + params.bottomMargin
                 val bottom = top + divider!!.intrinsicHeight
 

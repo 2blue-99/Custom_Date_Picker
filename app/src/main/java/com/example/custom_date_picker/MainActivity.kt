@@ -3,6 +3,7 @@ package com.example.custom_date_picker
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+
+        val displayMetrics = resources.displayMetrics
+        AppSize.initialize(displayMetrics.widthPixels, displayMetrics.heightPixels)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }

@@ -24,7 +24,7 @@ class MyAdapter(
 
     override fun onBindViewHolder(holder: MyAdapter.MyViewHolder, position: Int) {
         val layout = holder.root.layoutParams
-        layout.height = dpToPx(40)
+        layout.height = dpToPx(AppSize.ITEM_LIST_HEIGHT)
         holder.root.layoutParams = layout
 
         holder.title.text = items[position]
